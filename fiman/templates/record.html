@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% from 'bootstrap/pagination.html' import render_pager %}
+
+{% block content %}
+
+{% if transactions %}
+<table>
+    <tr>
+        <td>时间</td>
+        <td>内容摘要</td>
+        <td>支出</td>
+        <td>收入</td>
+        <td>项目ID</td>
+        <td>账户</td>
+    </tr>
+    {% for transaction in transactions %}
+    <tr>
+        <td>{{transaction.timestamp}}</td>
+        <td>{{transaction.summary}}</td>
+        <td>{{transaction.pay}}</td>
+        <td>{{transaction.income}}</td>
+        <td>{{transaction.project_id}}</td>
+        <td>{{transaction.account.number}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endif %}
+
+{% if transactions %}
+    <div class="page-footer">{{ render_pager(pagination) }}</div>
+{% endif %}
+
+{% endblock content %}
+

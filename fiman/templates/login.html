@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% from 'bootstrap/form.html' import render_form %}
+
+
+{#
+
+{% block content %}
+
+<form class="form-horizontal" method="POST" action="{{url_for('')}}">
+    <div class="control-group">
+        <label class="control-label" for="inputUsername">用户名</label>
+        <div class="controls">
+        <input type="text" id="inputUsername" placeholder="">
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="inputPassword">密码</label>
+        <div class="controls">
+        <input type="password" id="inputPassword" placeholder="">
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+        <label class="checkbox">
+            <input type="checkbox"> 记住密码
+        </label>
+        <button type="submit" class="btn">登录</button>
+        </div>
+    </div>
+    </form>
+
+
+{% endblock content %}
+
+#}
+
+{% block content %}
+<div class="container h-100">
+    <div class="row h-100 page-header justify-content-center align-items-center">
+        <h1>Log in</h1>
+    </div>
+    <div class="row h-100 justify-content-center align-items-center">
+        {{ render_form(form, extra_classes='col-6') }}
+    </div>
+</div>
+
+{% endblock content %}

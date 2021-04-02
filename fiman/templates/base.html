@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    {% block header %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+    <link ref="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
+    <link ref="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+
+    {% endblock header%}
+</head>
+<body>
+    {% block nav %}
+    {% endblock nav %}
+    <main class="container">
+        {% block content %}
+        首页
+        {% endblock content %}
+
+   
+    
+        {% block footer %}
+        {% endblock footer %}
+    </main>
+    
+    <script type="text/javascript" src="{{url_for('static', filename='js/jquery-3.2.1.slim.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    {% block script %}
+    {% endblock script %}
+    
+</body>
+</html>
