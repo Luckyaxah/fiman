@@ -1,12 +1,17 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
+from flask_wtf.csrf import CSRFError
+
 from fiman.settings import config
-
-
-from fiman.extensions import db, bootstrap
+from fiman.extensions import db, bootstrap, login_manager, csrf
 from fiman.commands import register_commands
 from fiman.models import Admin, Account, Project, Transaction
+
+from fiman.blueprints.front import front_bp
+from fiman.blueprints.auth import auth_bp
 from fiman.blueprints.backend import backend_bp
+
+
 
 
 
@@ -34,12 +39,30 @@ def register_logging(app):
 def register_extensions(app):
     bootstrap.init_app(app)
     db.init_app(app)
+    login_manager.init_app(app)
+    csrf.init_app(app)
 
 def register_blueprints(app):
+    app.register_blueprint(front_bp)
+    app.register_blueprint(auth_bp)
     app.register_blueprint(backend_bp)
 
 def register_errors(app):
-    pass
+    @app.errorhandler(400)
+    def bad_request(e):
+        return render_template('errors/400.html'), 400
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('errors/404.html'), 404
+
+    @app.errorhandler(500)
+    def internal_server_error(e):
+        return render_template('errors/500.html'), 500
+
+    @app.errorhandler(CSRFError)
+    def handle_csrf_error(e):
+        return render_template('errors/400.html', description=e.description), 400
 
 def register_shell_context(app):
     @app.shell_context_processor

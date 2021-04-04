@@ -1,6 +1,6 @@
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask_login import UserMixin
 from fiman.extensions import db
 
 class BaseModel:
@@ -11,7 +11,7 @@ class BaseModel:
             ret += key+':'+str(d[key])+'\n'
         return ret
 
-class Admin(db.Model,BaseModel):
+class Admin(db.Model, BaseModel, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(20))
     password_hash = db.Column(db.String(128))
@@ -22,11 +22,33 @@ class Admin(db.Model,BaseModel):
     def validate_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    @property
+    def password(self):
+        raise AttributeError('该属性不可读')
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+class User(db.Model, BaseModel):
+    id = db.Column(db.Integer, primary_key = True)
+    username = db.Column(db.String(20))
+    password_hash = db.Column(db.String(128))
+
+    @property
+    def password(self):
+        raise AttributeError('该属性不可读')
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
 class Account(db.Model,BaseModel):
     id = db.Column(db.Integer, primary_key = True)
     owner = db.Column(db.String(30))
     number = db.Column(db.String(30), unique = True)
     bank = db.Column(db.String(20))
+    abbr = db.Column(db.String(20), default='Abbr')
 
     transactions = db.relationship('Transaction', back_populates = 'account')
 

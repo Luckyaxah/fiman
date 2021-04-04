@@ -11,7 +11,9 @@
         <td>支出</td>
         <td>收入</td>
         <td>项目ID</td>
-        <td>账户</td>
+        <td>账户简称</td>
+        <td>对方户名</td>
+        <td>对方账户</td>
     </tr>
     {% for transaction in transactions %}
     <tr>
@@ -20,7 +22,9 @@
         <td>{{transaction.pay}}</td>
         <td>{{transaction.income}}</td>
         <td>{{transaction.project_id}}</td>
-        <td>{{transaction.account.number}}</td>
+        <td>{{transaction.account.abbr}}</td>
+        <td>{{transaction.oppo_name}}</td>
+        <td>{{transaction.oppo_account}}</td>
     </tr>
     {% endfor %}
 </table>

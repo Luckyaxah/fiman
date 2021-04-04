@@ -1,12 +1,15 @@
 
 from flask import Blueprint, render_template, request, current_app
 from fiman.models import Transaction
+from flask_login import login_required
 
 backend_bp = Blueprint('backend', __name__)
 
-@backend_bp.route('/')
-def index():
-    return render_template('base.html')
+@backend_bp.before_request
+@login_required
+def login_protect():
+    # 给整个蓝本增加登录保护
+    pass
 
 @backend_bp.route('/record')
 def record():
