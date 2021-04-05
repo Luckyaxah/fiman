@@ -3,7 +3,7 @@ from flask import Flask, render_template
 from flask_wtf.csrf import CSRFError
 
 from fiman.settings import config
-from fiman.extensions import db, bootstrap, login_manager, csrf
+from fiman.extensions import db, bootstrap, login_manager, csrf, ckeditor
 from fiman.commands import register_commands
 from fiman.models import Admin, Account, Project, Transaction
 
@@ -41,11 +41,13 @@ def register_extensions(app):
     db.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
+    ckeditor.init_app(app)
+
 
 def register_blueprints(app):
     app.register_blueprint(front_bp)
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(backend_bp)
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(backend_bp, url_prefix='/record')
 
 def register_errors(app):
     @app.errorhandler(400)

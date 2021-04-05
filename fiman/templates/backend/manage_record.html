@@ -1,0 +1,52 @@
+{% extends "base.html"%}
+{% from 'bootstrap/pagination.html' import render_pagination %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Transactions
+        <small class="text-muted">{{pagination.total}}</small>
+        <span class="float-right"><a class="btn" href="{{url_for('backend.new_transaction')}}">New Transaction</a></span>
+    </h1>
+</div>
+    
+    {% if transactions %}
+    <table>
+        <thead>
+            <tr>
+                <td>时间</td>
+                <td>内容摘要</td>
+                <td>支出</td>
+                <td>收入</td>
+                <td>项目ID</td>
+                <td>账户简称</td>
+                <td>对方户名</td>
+                <td>对方账户</td>
+            </tr>
+        </thead>
+        {% for transaction in transactions %}
+        <tr>
+            <td>{{transaction.timestamp}}</td>
+            <td>{{transaction.summary}}</td>
+            <td>{{transaction.pay}}</td>
+            <td>{{transaction.income}}</td>
+            <td>{{transaction.project_id}}</td>
+            <td>{{transaction.account.abbr}}</td>
+            <td>{{transaction.oppo_name}}</td>
+            <td>{{transaction.oppo_account}}</td>
+
+            <td><a class='btn' href="{{url_for('backend.edit_transaction', transaction_id = transaction.id)}}">Edit</a>
+                <form class="inline" method="post"
+                action="{{url_for('backend.delete_transaction', transaction_id = transaction.id, next=request.full_path)}}">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}"/>
+                    <button type="submit" class="btn" onclick="return confirm('Are you sure?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="page-footer">{{ render_pagination(pagination) }}</div>
+    {% else %}
+    <div class="tip"><h5>No posts.</h5></div>
+    {% endif %}
+
+{% endblock content %}
